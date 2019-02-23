@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <script>
+        function checklogin() {
+            var ls = window.localStorage;
+            if(ls["token"]!=ls["password"]||ls.token==""||ls.token==null){
+                window.location.href="index.html";
+            }
+        }
+        checklogin();
+    </script>
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="icon" href="images/logo1.jpg" sizes="32x32" />
+    <link rel="icon" href="images/logo1.jpg" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="images/logo1.jpg" />
+    <meta name="msapplication-TileImage" content="images/logo1.jpg" />
+</head>
+<body>
+<h1>CSS日后再加……</h1>
+<p class="submit">
+    <input type="submit" name="wp-submit" id="wp-submit" onclick="do3()" class="button button-primary button-large" value="注销" />
+</p>
+<br>
+<table class="table">
+    <caption>没有css的表格布局</caption>
+    <thead>
+    <tr>
+        <th>项目</th>
+        <th>键值</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>用户名</td>
+        <td id="tr_username" color="black"></td>
+    </tr>
+    <tr>
+        <td>邮箱</td>
+        <td id="tr_email" color="black"></td>
+    </tr>
+    <tr>
+        <td>注册时间</td>
+        <td id="tr_rtime" color="black"></td>
+    </tr>
+    <tr>
+        <td>上次登录时间</td>
+        <td id="tr_ltime" color="black"></td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    var ls = window.localStorage;
+    function do3() {
+        ls["token"]="000";
+        getltime();
+        window.location.href="index.html";
+    }
+    function getltime() {
+        var date = new Date();
+        var ima = date.toLocaleString();
+        localStorage.setItem("lastTime", ima);
+    }
+    document.getElementById("tr_username").innerHTML = ls.username;
+    document.getElementById("tr_email").innerHTML = ls.email;
+    document.getElementById("tr_rtime").innerHTML = ls.registerTime;
+
+    function showlt() {
+        //var key=JSON.parse(localStorage.getItem("lastTime"));
+        //if(key==""||key==null){
+        if(ls.lastTime==""||ls.lastTime==null){
+            document.getElementById("tr_ltime").innerHTML = "没有最近的记录。";
+        } else {
+            document.getElementById("tr_ltime").innerHTML = ls.lastTime;
+        }
+    }
+    showlt();
+</script>
+</body>
+</html>

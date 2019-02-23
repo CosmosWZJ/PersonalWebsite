@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+    <!--[if IE 8]>
+    <html xmlns="http://www.w3.org/1999/xhtml" class="ie8" lang="zh-CN">
+    <![endif]-->
+    <!--[if !(IE 8) ]><!-->
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+    <!--<![endif]-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script>
+        if("sessionStorage" in window)
+        {
+            try {
+                for (var key in sessionStorage){
+                    if(key.indexOf("wp-autosave-")!=-1){
+                        sessionStorage.removeItem(key)
+                    }
+                }
+            }catch(e) {}
+        };
+    </script>
+    <link rel="stylesheet" type="text/css" href="login.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/jquery/jquery@1.8.2/jquery.min.js"></script>
+
+    <meta name='robots' content='noindex,follow' />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="images/logo1.png" sizes="32x32" />
+    <link rel="icon" href="images/logo1.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="images/logo1.png" />
+    <meta name="msapplication-TileImage" content="images/logo1.png" />
+</head>
+
+<body class="login login-action-login wp-core-ui  locale-zh-cn">
+
+<div id="login">
+    <h1>
+        <a href="http://www.imoe.club/" title="AP Technology" tabindex="-1">AP Technology</a>
+    </h1>
+    <p class="message">	您正在登录。<br />
+    </p>
+
+    <form name="loginform" id="loginform">
+        <p>
+            <label for="user_login">用户名或电子邮件地址<br />
+                <input type="text" name="log" id="user_login" aria-describedby="login_error" class="input" value="" size="20" /></label>
+        </p>
+        <p>
+            <label for="user_pass">密码<br />
+                <input type="password" name="pwd" id="user_pass" aria-describedby="login_error" class="input" value="" size="20" /></label>
+        </p>
+        <p class="forgetmenot"><label for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="forever"  /> 记住我的登录信息</label></p>
+        <p class="submit">
+            <input type="submit" name="wp-submit" id="wp-submit" onclick="do2()" class="button button-primary button-large" value="登录" />
+        </p>
+    </form>
+    <p id="nav">
+        <a href="R1.html">注册</a> | 	<a href="http://www.imoe.club/wp-login.php?action=lostpassword">忘记密码？</a>
+    </p>
+    <script type="text/javascript">
+        function wp_attempt_focus(){
+            setTimeout( function(){ try{
+                d = document.getElementById('user_login');
+                d.focus();
+                d.select();
+            } catch(e){}
+            }, 200);
+        }
+
+        wp_attempt_focus();
+        if(typeof wpOnload=='function')wpOnload();
+    </script>
+    <p id="backtoblog"><a href="http://www.imoe.club/">&larr; 返回到AP Technology</a></p>
+    <div class="privacy-policy-page-link"><a class="privacy-policy-link" href="http://www.imoe.club/privacy-policy/">Privacy Policy</a></div>
+</div>
+<script>
+    function do2() {
+        if (!window.localStorage) {
+            alert("您的浏览器不兼容");
+            return false;
+        } else if(!(verificationOK()&&checkusername()&&checkps())){
+            window.location.reload();
+
+        }else if(!comfirm()) {
+            window.location.reload();
+        } else{
+            alert("登陆成功！");
+            window.open("success.html");
+        }
+    }
+
+    function checkusername() {
+        if (document.getElementById('user_login').value==""){
+            alert("请输入用户名");
+            return false;
+        }else{
+            return true;
+        }
+    }
+    function checkps() {
+        if(document.getElementById('user_pass').value==""){
+            alert("请输入密码！");
+            return false;
+        }else{
+            return true;
+        }
+    }
+    function comfirm() {
+        var ls = window.localStorage;
+        var sp = ls["password"];
+        if (document.getElementById('user_pass').value != sp) {
+            alert("密码错误，请重试！");
+            return false;
+        }else{
+            ls["token"] = sp;
+            return true;
+        }
+
+    }
+
+</script>
+
+
+
+<script type="text/javascript" src="js/login.js"></script>
+<script type="text/javascript">
+    jQuery("body").prepend("<div class=\"loading\"><img src=\"images/login_loading.gif\" width=\"58\" height=\"10\"></div><div id=\"bg\"><img /></div>");
+    jQuery('#bg').children('img').attr('src', 'images/yourname.jpg').load(function(){
+        resizeImage('bg');
+        jQuery(window).bind("resize", function() { resizeImage('bg'); });
+        jQuery('.loading').fadeOut();
+    });
+</script>
+
+<script>
+    function verificationOK(){
+        var x, y, z = "verification";
+        var x=$('#loginform').find('input[name="verification"]').val();
+        //var x=document.forms["loginform"]["verification"].value; //原生js实现
+        var y=$('#registerform').find('input[name="verification"]').val();
+        var z=$('#lostpasswordform').find('input[name="verification"]').val();
+        if (x=="verification" || y=="verification" || z=="verification"){
+            alert("Please slide the block to verificate!");
+            return false;
+        }else{
+            return true;
+        }
+    }
+    $(document).ready(function(){
+        $( '<p><div id="verification-slider"><div id="slider"><div id="slider_bg"></div><span id="label">»</span><span id="labelTip">Slide to Verificate</span></div><input type="hidden" name="verification" value="verification" /></div><p>' ).insertBefore( $( ".submit" ) );
+        //$('form').attr('onsubmit','return verificationOK();');
+        $(".forgetmenot").replaceWith('<p class="forgetmenot">Remember Me<input name="rememberme" id="rememberme" value="forever" type="checkbox"><label for="rememberme" style="float: right;margin-top: 5px;transform: scale(2);margin-right: -10px;"></label></p>');
+    });
+</script><script type="text/javascript">
+    var startTime = 0;
+    var endTime = 0;
+    var numTime = 0;
+    $(function () {
+        var slider = new SliderUnlock("#slider",{
+            successLabelTip : "OK"
+        },function(){
+            var sli_width = $("#slider_bg").width();
+            $('#verification-slider').html('').append('<input id="verification-ok" class="input" type="text" size="25" value="OK!" name="verification" disabled="true" />');
+
+            endTime = nowTime();
+            numTime = endTime-startTime;
+            endTime = 0;
+            startTime = 0;
+            // 获取到滑动使用的时间 滑动的宽度
+            // alert( numTime );
+            // alert( sli_width );
+        });
+        slider.init();
+    })
+
+    /**
+     * 获取时间精确到毫秒
+     * @type
+     */
+    function nowTime(){
+        var myDate = new Date();
+        var H = myDate.getHours();//获取小时
+        var M = myDate.getMinutes(); //获取分钟
+        var S = myDate.getSeconds();//获取秒
+        var MS = myDate.getMilliseconds();//获取毫秒
+        var milliSeconds = H * 3600 * 1000 + M * 60 * 1000 + S * 1000 + MS;
+        return milliSeconds;
+    }
+</script>
+<script type="text/javascript" src="js/verification.js"></script>	<div class="clear"></div>
+</body>
+</html>
+
+
+</body>
+</html>

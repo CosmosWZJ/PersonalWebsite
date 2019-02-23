@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+    <!--[if IE 8]>
+    <html xmlns="http://www.w3.org/1999/xhtml" class="ie8" lang="zh-CN">
+    <![endif]-->
+    <!--[if !(IE 8) ]><!-->
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+    <!--<![endif]-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>注册</title>
+    <link rel="stylesheet" type="text/css" href="login.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/jquery/jquery@1.8.2/jquery.min.js"></script>
+    <meta name='robots' content='noindex,follow' />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="images/logo1.jpg" sizes="32x32" />
+    <link rel="icon" href="images/logo1.jpg" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="images/logo1.jpg" />
+    <meta name="msapplication-TileImage" content="images/logo1.jpg" />
+</head>
+<body class="login login-action-register wp-core-ui  locale-zh-cn">
+<div id="login">
+    <h1><a href="http://www.imoe.club/" title="AP Technology" tabindex="-1">AP Technology</a></h1>
+    <p class="message register">在这个站点注册</p>
+    <form name="registerform" id="registerform" method="post" novalidate="novalidate">
+        <p>
+            <label for="user_login">用户名<br />
+                <input type="text" name="user_login" id="user_login" class="input" value="" size="20" /></label>
+        </p>
+        <p>
+            <label for="user_email">电子邮件<br />
+                <input type="email" name="user_email" id="user_email" class="input" value="" size="25" /></label>
+        </p>
+        <p>
+            <label for="user_email">密码<br />
+                <input type="ps" name="user_ps" id="user_ps" class="input" value="" size="25" /></label>
+        </p>
+        <p>
+            <label for="user_email">确认密码<br />
+                <input type="ps1" name="user_ps1" id="user_ps1" class="input" value="" size="25" /></label>
+        </p>
+        <br class="clear" />
+        <p class="submit"><input type="submit" onclick="do1()" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="注册" /></p>
+    </form>
+
+    <p id="nav">
+        <a href="index.html">登录</a>
+        | <a href="http://www.imoe.club/wp-login.php?action=lostpassword">忘记密码？</a>
+    </p>
+</div>
+
+<script>
+    function do1() {
+        if (!window.localStorage) {
+            alert("您的浏览器不兼容");
+            return false;
+        } else if(!(checklogin()&&checkemail()&&checkps())){
+            window.location.reload();
+
+        }else if(!ST()) {
+            window.location.reload();
+        }
+        else{
+            alert("注册成功，请登录！");
+            window.open("index.html");
+        }
+    }
+    function checklogin(){
+        if (document.getElementById('user_login').value==""){
+            alert("请输入用户名");
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    function checkemail()
+    {
+        var myemail=document.getElementById('user_email').value;
+        var myReg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+
+        if(myReg.test(myemail)){
+            return true;
+        }else{
+            alert("请检查邮箱格式");
+            myReg.focus();
+            return false;
+        }
+    }
+    function checkps() {
+        var regex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,30}');
+        //密码中必须包含字母、数字、特称字符，至少6个字符，最多30个字符。
+        var psone=document.getElementById('user_ps').value;
+        var pstwo=document.getElementById('user_ps1').value;
+
+        if(psone==""){
+            alert("密码不能为空！");
+            return false;
+        }
+        else if(psone!=pstwo){
+            alert("两次密码不一致！");
+            return false;
+        }else if(!regex.test(psone)){
+            alert("密码强度过弱，密码至少6位，必须包含字母、数字、特称字符！");
+            return false;
+        }else{
+            return true;
+        }
+    }
+    function ST() {
+        var ls = window.localStorage;
+        var usernameStorage =  ls.username;
+        if (document.getElementById('user_login').value == usernameStorage) {
+            alert("用户名已存在");
+            return false;
+        }else{
+            ls["username"] = document.getElementById('user_login').value;
+            ls["password"] = document.getElementById('user_ps').value;;
+            var email = document.getElementById('user_email').value;
+            ls["email"] = email;
+
+            var date = new Date();
+            var ima = date.toLocaleString();
+            ls["registerTime"] = ima;
+            return true;
+        }
+
+    }
+</script>
+
+
+
+<script type="text/javascript" src="js/login.js"></script>
+<script type="text/javascript">
+    jQuery("body").prepend("<div class=\"loading\"><img src=\"images/login_loading.gif\" width=\"58\" height=\"10\"></div><div id=\"bg\"><img /></div>");
+    jQuery('#bg').children('img').attr('src', 'images/suise.jpg').load(function(){
+        resizeImage('bg');
+        jQuery(window).bind("resize", function() { resizeImage('bg'); });
+        jQuery('.loading').fadeOut();
+    });</script>
+<script>
+    function verificationOK(){
+        var x, y, z = "verification";
+        var x=$('#loginform').find('input[name="verification"]').val();
+        //var x=document.forms["loginform"]["verification"].value; //原生js实现
+        var y=$('#registerform').find('input[name="verification"]').val();
+        var z=$('#lostpasswordform').find('input[name="verification"]').val();
+        if (x=="verification" || y=="verification" || z=="verification"){
+            alert("Please slide the block to verificate!");
+            return false;
+        }
+    }
+    $(document).ready(function(){
+        $( '<p><div id="verification-slider"><div id="slider"><div id="slider_bg"></div><span id="label">»</span><span id="labelTip">Slide to Verificate</span></div><input type="hidden" name="verification" value="verification" /></div><p>' ).insertBefore( $( ".submit" ) );
+        $('form').attr('onsubmit','return verificationOK();');
+        $(".forgetmenot").replaceWith('<p class="forgetmenot">Remember Me<input name="rememberme" id="rememberme" value="forever" type="checkbox"><label for="rememberme" style="float: right;margin-top: 5px;transform: scale(2);margin-right: -10px;"></label></p>');
+    });
+</body>
+</html>
