@@ -29,35 +29,36 @@ var iUp = (function () {
 
 $(document).ready(function () {
 	// 获取one一个本地数据
-	fetch("data1.json")
-	.then((res) => res.json())
-	.then(data => {
-		var num = Math.round(Math.random() * (2299 - 201)) +201;
-		document.getElementById("description").innerHTML = data.sents[num].content.stringify;		
-	})
-	.catch(err => console.log(err));
+  $.getJSON("./assets/js/data1.json", function(data){
+    var $jsontip = $("#jsonTip");
+    var strHtml = "测试";
+    //存储数据的变量
+    $jsontip.empty();
+    //清空内容 
+    $.each(data, function (infoIndex, info){
+      strHtml += "格言：" + info["content"] + "<br>";
+      strHtml += "编码：" + info["number"] + "<br>";
+      strHtml += "<hr>" 
+    }) 
+    var x = 2300;
+    var y = 200;
+    var rand = parseInt(Math.random() * (x - y + 1) + y);
+    $("#description").text(data[rand].content);
+    //$jsontip.html(strHtml);
+    //显示处理后的数据
+
+  }) 
 	
 
 
 		// 获取一言数据
-		fetch('https://v1.hitokoto.cn').then(function (res) {
-			return res.json();
-		}).then(function (e) {
-			$('#description').html(e.hitokoto)
-		}).catch(function (err) {
-			console.error(err);
-	})
-
-// 	fetch("data1.json").then(function (res) {	
-// 		return res.json();		
-// 	}).then(function (e) {
-// 		alert("something");
-// 		var num = Math.round(Math.random() * (2299 - 201)) +201;	
-// 		$('#description').html(e.sents[num].content)
-// 	}).catch(function (err) {
-// 		console.error(err);
-// })
-
+	// 	fetch('https://v1.hitokoto.cn').then(function (res) {
+	// 		return res.json();
+	// 	}).then(function (e) {
+	// 		$('#description').html(e.hitokoto)
+	// 	}).catch(function (err) {
+	// 		console.error(err);
+	// })
 	
 	// var url = 'https://query.yahooapis.com/v1/public/yql' + 
     // '?q=' + encodeURIComponent('select * from json where url=@url') +
